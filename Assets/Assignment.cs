@@ -76,7 +76,7 @@ static public class AssignmentPart1
 
     const int PartyMemberSignifier = 1;
 
-    const int EuipmentSignifier = 2;
+    const int EquipmentSignifier = 2;
 
     static string path = Application.dataPath + Path.DirectorySeparatorChar + "PartySaveData.txt" ;
 
@@ -93,6 +93,12 @@ static public class AssignmentPart1
             //string pcStats = PartyMemberSignifier + "," + 
             string pcStats = string.Join(",", PartyMemberSignifier, pc.classID,pc.health,pc.mana,pc.strength,pc.agility,pc.wisdom);
             sw.WriteLine(pcStats);
+
+            foreach(int equipID in pc.equipment)
+            {
+                string equipSaveData = string.Join(",", EquipmentSignifier, equipID);
+                sw.WriteLine(equipSaveData);
+            }
         }
 
         sw.Close();
@@ -101,8 +107,28 @@ static public class AssignmentPart1
 
     static public void LoadPartyButtonPressed()
     {
-
+        GameContent.partyCharacters.Clear();
         //GameContent.partyCharacters.Clear();
+
+        StreamReader sr = new StreamReader(path);
+
+        string line;
+        while((line = sr.ReadLine()) !=null)
+        {
+            string[] csv = line.Split(',');
+
+            int signifier = int.Parse(csv[0]);
+
+            if(signifier == PartyMemberSignifier)
+            {
+                PartyCharacter pc = new PartyCharacter(int.Parse(csv[1]), int.Parse(csv[2]), int.Parse(csv[3]), int.Parse(csv[4]), int.Parse(csv[5]), int.Parse(csv[6]));
+                GameContent.partyCharacters.AddLast(pc);
+            }
+            else if(signifier == EquipmentSignifier)
+            {
+                GameContent.partyCharacters.Last.Value.equipment.AddLast(int.Parse(csv[1]));
+            }
+        }
 
         GameContent.RefreshUI();
 
