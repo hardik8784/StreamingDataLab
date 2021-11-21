@@ -7,6 +7,7 @@ Pixel RPG characters created by Sean Browning.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 
 #region Assignment Instructions
@@ -73,18 +74,29 @@ public partial class PartyCharacter
 static public class AssignmentPart1
 {
 
+    const int PartyMemberSignifier = 1;
+
+    const int EuipmentSignifier = 2;
+
+    static string path = Application.dataPath + Path.DirectorySeparatorChar + "PartySaveData.txt" ;
+
     static public void SavePartyButtonPressed()
     {
+        Debug.Log("Start of Loop _ SavePartyButtonPressed!");
 
-        Debug.Log("Start of Loop!");
-
+        StreamWriter sw = new StreamWriter(path);
 
         foreach (PartyCharacter pc in GameContent.partyCharacters)
         {
             Debug.Log("PC class id == " + pc.classID + " , " + pc.health);
+
+            //string pcStats = PartyMemberSignifier + "," + 
+            string pcStats = string.Join(",", PartyMemberSignifier, pc.classID,pc.health,pc.mana,pc.strength,pc.agility,pc.wisdom);
+            sw.WriteLine(pcStats);
         }
 
-        Debug.Log("End of Loop!");
+        sw.Close();
+        Debug.Log("End of Loop_SavePartyButtonPressed!");
     }
 
     static public void LoadPartyButtonPressed()
