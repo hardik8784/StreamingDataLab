@@ -59,6 +59,7 @@
     <Compile Include="Assets\SystemManager.cs" />
     <Compile Include="Assets\InternalSystems.cs" />
     <Compile Include="Assets\Assignment.cs" />
+    <Compile Include="Assets\PartySharingManager.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\PartySaveData.txt" />
