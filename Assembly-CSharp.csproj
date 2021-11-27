@@ -56,13 +56,18 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\PartySharingManager.cs" />
     <Compile Include="Assets\SystemManager.cs" />
     <Compile Include="Assets\InternalSystems.cs" />
     <Compile Include="Assets\Assignment.cs" />
-    <Compile Include="Assets\PartySharingManager.cs" />
   </ItemGroup>
   <ItemGroup>
+     <None Include="Assets\3PartySaveData_Assignment2.txt" />
+     <None Include="Assets\2PartySaveData_Assignment2.txt" />
      <None Include="Assets\PartySaveData.txt" />
+     <None Include="Assets\4PartySaveData_Assignment2.txt" />
+     <None Include="Assets\1PartySaveData_Assignment2.txt" />
+     <None Include="Assets\PartySaveData_IndicesAndNames_Assignment2.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.2.0f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

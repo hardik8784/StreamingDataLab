@@ -208,34 +208,65 @@ static public class AssignmentPart2
 
     private static LinkedList<PartySaveData> Parties;
 
-    private static int LastUsedIndex;
+    private static uint LastUsedIndex;
 
     static public void GameStart()
     {
-        LoadPartyMetaData();
+       
         GameContent.RefreshUI();
+        LoadPartyMetaData();
         Debug.Log("GameStart");
 
     }
 
     static public List<string> GetListOfPartyNames()
     {
-        return new List<string>() {
-            "sample 1",
-            "sample_Hardik 2",
-            "sample 3"
-        };
+
+        if(Parties == null)
+        {
+            return new List<string>();
+        }
+        List<string> pNames = new List<string>();
+
+        foreach(PartySaveData psd in Parties)
+        {
+            pNames.Add(psd.name);
+        }
+
+        return pNames;
+
+        //return new List<string>() {
+        //    "sample 1",
+        //    "sample_Hardik 2",
+        //    "sample 3"
+        //};
 
     }
 
     static public void LoadPartyDropDownChanged(string selectedName)
     {
+        foreach(PartySaveData psd in Parties)
+        {
+            if(selectedName == psd.name)
+            {
+                psd.LoadParty();
+            }
+        }
+
         GameContent.RefreshUI();
         Debug.Log("LoadPartyDropDownChanged" +selectedName);
     }
 
     static public void SavePartyButtonPressed()
     {
+        LastUsedIndex++;
+        PartySaveData p = new PartySaveData(LastUsedIndex,GameContent.GetPartyNameFromInput());
+        Parties.AddLast(p);
+
+        SavePartyMetaData();
+
+        p.SaveParty();
+
         GameContent.RefreshUI();
         Debug.Log("SavePartyButtonPressed");
     }
@@ -253,12 +284,15 @@ static public class AssignmentPart2
     static public void SavePartyMetaData()
     {
         StreamWriter sw = new StreamWriter(Application.dataPath + Path.DirectorySeparatorChar + PartyMetaFile);
-        
+
+        sw.WriteLine("1,"+LastUsedIndex);
+
         foreach(PartySaveData pData in Parties)
         {
-            sw.WriteLine(pData.index + "," + pData.name);
+            sw.WriteLine("2," + pData.index + "," + pData.name);
         }
-            
+
+        sw.Close();
     }
 
     static public void LoadPartyMetaData()
@@ -271,7 +305,7 @@ static public class AssignmentPart2
 
         if (File.Exists(path))
         {
-            GameContent.partyCharacters.Clear();
+            
             //GameContent.partyCharacters.Clear();
 
             StreamReader sr = new StreamReader(path);
@@ -281,11 +315,22 @@ static public class AssignmentPart2
             {
                 string[] csv = line.Split(',');
 
-                //int signifier = int.Parse(csv[0]);
+                
+                int signifier = int.Parse(csv[0]);
 
-                Parties.AddLast(new PartySaveData(uint.Parse(csv[0]), csv[1]));
+                if(signifier ==1)
+                {
+                    LastUsedIndex = uint.Parse(csv[1]);
+                }
+                else if(signifier ==2)
+                {
+                    Parties.AddLast(new PartySaveData(uint.Parse(csv[1]), csv[2]));
+                }
+
+               
             
             }
+            sr.Close();
         }
 
     }
@@ -365,5 +410,6 @@ class PartySaveData
             }
             
         }
+        sr.Close();
     }
 }
