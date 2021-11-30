@@ -60,6 +60,7 @@
     <Compile Include="Assets\SystemManager.cs" />
     <Compile Include="Assets\InternalSystems.cs" />
     <Compile Include="Assets\Assignment.cs" />
+    <Compile Include="Assets\NetworkedClient.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\3PartySaveData_Assignment2.txt" />

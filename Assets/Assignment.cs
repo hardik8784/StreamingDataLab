@@ -339,6 +339,8 @@ static public class AssignmentPart2
 #endregion
 
 
+
+
 class PartySaveData
 {
     const int PartyMemberSignifier = 0;
@@ -413,3 +415,4 @@ class PartySaveData
         sr.Close();
     }
 }
+
