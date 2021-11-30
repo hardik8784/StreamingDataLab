@@ -29,6 +29,8 @@ public class PartySharingManager : MonoBehaviour
     public void SharePartyButtonPressed()
     {
         //Debug.Log("SharePartyButtonPressed");
+
+        AssignmentPart2.SendPartyDataToServer(_NetwroekdClient);
     }
 
     public void JoinSharingRoomButtonPressed()

@@ -118,9 +118,19 @@ public class NetworkedClient : MonoBehaviour
 static public class ClientToServerSignifiers
 {
     public const int JoinSharingRoom = 1;
+
+    public const int PartyDataTransferStart = 101;
+
+    public const int PartyDataTransfer = 102;
+
+    public const int PartyDataTransferEnd = 103;
 }
 
 static public class ServerToClientSignifiers
 {
+    public const int PartyDataTransferStart = 101;
 
+    public const int PartyDataTransfer = 102;
+
+    public const int PartyDataTransferEnd = 103;
 }

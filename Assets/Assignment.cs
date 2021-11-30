@@ -334,6 +334,41 @@ static public class AssignmentPart2
         }
 
     }
+
+    static public void SendPartyDataToServer(NetworkedClient _NetwroekdClient)
+    {
+        const int PartyMemberSignifier = 0;
+
+        const int EquipmentSignifier = 1;
+
+        LinkedList<string> Data = new LinkedList<string>();
+
+        foreach (PartyCharacter pc in GameContent.partyCharacters)
+        {
+
+
+            //Debug.Log("PC class id == " + pc.classID + " , " + pc.health);
+
+            //string pcStats = PartyMemberSignifier + "," + 
+            string pcStats = string.Join(",", PartyMemberSignifier, pc.classID, pc.health, pc.mana, pc.strength, pc.agility, pc.wisdom);
+            Data.AddLast(pcStats);
+
+            foreach (int equipID in pc.equipment)
+            {
+                string equipSaveData = string.Join(",", EquipmentSignifier, equipID);
+                Data.AddLast(equipSaveData);
+            }
+        }
+
+        _NetwroekdClient.SendMessageToHost(ClientToServerSignifiers.PartyDataTransferStart + "");
+
+        foreach(string d in Data)
+        {
+            _NetwroekdClient.SendMessageToHost(ClientToServerSignifiers.PartyDataTransfer + "," + d);
+        }
+
+        _NetwroekdClient.SendMessageToHost(ClientToServerSignifiers.PartyDataTransferEnd + "");
+    }
 }
 
 #endregion
@@ -414,5 +449,7 @@ class PartySaveData
         }
         sr.Close();
     }
+
+   
 }
 

@@ -119,6 +119,40 @@ public class NetworkedServer : MonoBehaviour
 
            
         }
+
+        else if (Signifier == ClientToServerSignifiers.PartyDataTransferStart)
+        {
+            SharingRoom sr = FindSharingRoomWithConnectionID(id);
+            sr.TransferData = new LinkedList<string>();
+        }
+        else if (Signifier == ClientToServerSignifiers.PartyDataTransfer)
+        {
+            SharingRoom sr = FindSharingRoomWithConnectionID(id);
+            sr.TransferData.AddLast(msg);
+        }
+        else if (Signifier == ClientToServerSignifiers.PartyDataTransferEnd)
+        {
+            SharingRoom sr = FindSharingRoomWithConnectionID(id);
+
+            foreach(int pID in sr.ConnectionIDs)
+            {
+                if(pID == id)
+                {
+                    continue;
+                    SendMessageToClient(ServerToClientSignifiers.PartyDataTransferStart + "" , pID);
+
+                    foreach (string d in sr.TransferData)
+                    {
+                        SendMessageToClient(d, pID);
+                        //Debug.Log(d);
+                    }
+
+                    SendMessageToClient(ServerToClientSignifiers.PartyDataTransferEnd + "", pID);
+                }
+            }
+
+           
+        }
     }
     public void PlayerDisconnected(int id)
     {
@@ -173,6 +207,8 @@ public class SharingRoom
 
     public LinkedList<int> ConnectionIDs;
 
+    public LinkedList<string> TransferData;
+
     public SharingRoom()
     {
         ConnectionIDs = new LinkedList<int>();
@@ -182,9 +218,19 @@ public class SharingRoom
 static public class ClientToServerSignifiers
 {
     public const int JoinSharingRoom = 1;
+
+    public const int PartyDataTransferStart = 101;
+
+    public const int PartyDataTransfer = 102;
+
+    public const int PartyDataTransferEnd = 103;
 }
 
 static public class ServerToClientSignifiers
 {
+    public const int PartyDataTransferStart = 101;
 
+    public const int PartyDataTransfer = 102;
+
+    public const int PartyDataTransferEnd = 103;
 }
